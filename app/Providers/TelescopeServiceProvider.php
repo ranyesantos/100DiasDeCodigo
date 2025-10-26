@@ -22,11 +22,11 @@ final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             && $this->hasProviderToRegister()
             && $this->hasEnvEnabled();
 
-        Log::notice('Registering Telescope Service Provider');
-
         if (! $canRegister) {
             return;
         }
+
+        Log::notice('Registering Telescope Service Provider');
 
         $this->registerTelescopeServiceProvider();
         $this->setNightMode();
