@@ -14,6 +14,11 @@ tasks:
     cmds:
       - task --list-all --sort none
 
+  route-list:
+    desc: List all registered routes
+    aliases: [rl]
+    cmd: 'php artisan route:list --ansi'
+
   pint:
     desc: Run Pint code style fixer
     cmds:

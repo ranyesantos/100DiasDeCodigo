@@ -4,6 +4,10 @@
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: route-list
+route-list: ## Show the application route list
+	@php artisan route:list --ansi
+
 .PHONY: pint
 pint: ## Run Pint code style fixer
 	@export XDEBUG_MODE=off
