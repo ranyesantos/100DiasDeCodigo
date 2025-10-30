@@ -16,6 +16,7 @@
     },
     "devDependencies": {
         "@tailwindcss/vite": "4.1.16",
+        "autoprefixer": "10.4.21",
         "axios": "1.13.1",
         "concurrently": "9.2.1",
         "husky": "9.1.7",
@@ -27,6 +28,11 @@
         "prettier-plugin-tailwindcss": "0.7.1",
         "tailwindcss": "4.1.16",
         "vite": "7.1.12"
+    },
+    "optionalDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "4.9.5",
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
+        "lightningcss-linux-x64-gnu": "^1.29.1"
     },
     "lint-staged": {
         "*.{js,ts,json,yml,md,css,blade.php}": [
