@@ -7,6 +7,3 @@ updates:
     schedule:
       interval: 'cron'
       cronjob: '0 10 * * 3' # At 10:00 on Wednesday
-    ignore:
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
