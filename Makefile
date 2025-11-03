@@ -39,12 +39,18 @@ test-phpstan: ## Run PHPStan in test mode
 .PHONY: format
 format: rector pint ## Run Pint and Rector and try to fixes the source code
 
+.PHONY: f
+f: format ## Alias for format
+
 .PHONY: check
 check: test-rector test-pint test-phpstan ## Run Pint, PHPStan with Rector in dry-run mode
 
 .PHONY: test
 test: ## Run all tests
 	@$(CURDIR)/vendor/bin/pest --parallel --compact
+
+.PHONY: t
+t: test ## Alias for test
 
 .PHONY: test-unit
 test-unit: ## Run unit tests
