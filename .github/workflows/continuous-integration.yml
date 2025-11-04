@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -14,73 +15,66 @@ concurrency:
 
 jobs:
   setup:
-    if: false # TODO: refactor cache keys and re-enable
     name: Setup PHP
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      php-version: '8.4'
+      php-extensions: 'mbstring,pdo,xml,ctype,fileinfo,json,curl,openssl,dom,zip'
+      php-extensions-key: 'extcache-2025'
+      php-ini-properties: 'post_max_size=256M,upload_max_filesize=256M'
+      php-composer-flags: '--prefer-dist --optimize-autoloader'
     outputs:
-      CACHE_KEY: ${{ steps.cache.outputs.key }}
-      PHP_VERSION: ${{ steps.setup.outputs.PHP_VERSION }}
-      PHP_EXTENSIONS: ${{ steps.setup.outputs.PHP_EXTENSIONS }}
-      PHP_INI_PROPERTIES: ${{ steps.setup.outputs.PHP_INI_PROPERTIES }}
-      COMPOSER_FLAGS: ${{ steps.setup.outputs.COMPOSER_FLAGS }}
+      php-version: ${{ env.php-version }}
+      php-extensions: ${{ env.php-extensions }}
+      php-extensions-key: ${{ env.php-extensions-key }}
+      php-ini-properties: ${{ env.php-ini-properties }}
+      php-composer-flags: ${{ env.php-composer-flags }}
     steps:
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Setup job outputs
-        id: setup
+      - name: Common Values
+        id: common-values
         run: |
-          echo "PHP_VERSION=8.4" >> "$GITHUB_OUTPUT"
-          echo "PHP_EXTENSIONS=mbstring,pdo,xml,ctype,fileinfo,json,curl,openssl,dom,zip" >> "$GITHUB_OUTPUT"
-          echo "PHP_INI_PROPERTIES=post_max_size=256M,upload_max_filesize=256M" >> "$GITHUB_OUTPUT"
-          echo "COMPOSER_FLAGS=--prefer-dist --optimize-autoloader" >> "$GITHUB_OUTPUT"
-          echo "EXTENSIONS_KEY=ext-cache" >> "$GITHUB_OUTPUT"
-
-      - name: Create cache key
-        id: cache
-        run: |
-          composer_hash=${{ hashFiles('**/composer.lock') }}
-          os_lower=$(echo ${{ runner.os }} | tr '[:upper:]' '[:lower:]')
-          arch_lower=$(echo ${{ runner.arch }} | tr '[:upper:]' '[:lower:]')
-          combined_key="${os_lower}-${arch_lower}-composer-${composer_hash}"
-          echo "key=${combined_key}" >> "$GITHUB_OUTPUT"
+          echo "os-lower=$(echo ${{ runner.os }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+          echo "arch-lower=$(echo ${{ runner.arch }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - name: Setup cache environment
-        id: extcache
+        id: cache-ext
         uses: shivammathur/cache-extensions@4595bea7d6630821b0a3a4894f816402faaf324c #1.13.0
         with:
-          php-version: ${{ steps.setup.outputs.PHP_VERSION }}
-          extensions: ${{ steps.setup.outputs.PHP_EXTENSIONS }}
-          key: ${{ steps.setup.outputs.EXTENSIONS_KEY }}
+          php-version: ${{ env.php-version }}
+          extensions: ${{ env.php-extensions }}
+          key: ${{ env.php-extensions-key }}
 
       - name: Cache extensions
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #4.3.0
         with:
-          path: ${{ steps.extcache.outputs.dir }}
-          key: ${{ runner.os }}-phpext-${{ steps.setup.outputs.PHP_VERSION }}-${{ steps.setup.outputs.EXTENSIONS_KEY }}
-          restore-keys: ${{ runner.os }}-phpext-${{ steps.setup.outputs.PHP_VERSION }}
+          path: ${{ steps.cache-ext.outputs.dir }}
+          key: ${{ steps.common-values.outputs.os-lower }}-phpext-${{ env.php-version }}-${{ env.php-extensions-key }}
+          restore-keys: ${{ steps.common-values.outputs.os-lower }}-phpext-${{ env.php-version }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # v2.35.5
+      - uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f #2.35.5
         with:
-          php-version: ${{ steps.setup.outputs.PHP_VERSION }}
+          php-version: ${{ env.php-version }}
           coverage: none
-          extensions: ${{ steps.setup.outputs.PHP_EXTENSIONS }}
+          extensions: ${{ env.php-extensions }}
 
       - name: Cache dependencies
         id: cache-composer
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 #4.3.0
         with:
           path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          key: ${{ steps.common-values.outputs.os-lower }}-composer-${{ hashFiles('composer.lock') }}
 
-      - if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
-        name: Install Dependencies
+      - name: Install Dependencies
+        if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --optimize-autoloader
         shell: bash
 
   pint:
+    if: false # TODO: refactor cache keys and re-enable
     name: Perform Pint format
     needs:
       - setup
@@ -93,6 +87,7 @@ jobs:
       PHP_VERSION: ${{ needs.setup.outputs.PHP_VERSION }}
 
   rector:
+    if: false # TODO: refactor cache keys and re-enable
     name: Perform Rector Check
     needs:
       - setup
@@ -105,6 +100,7 @@ jobs:
       PHP_VERSION: ${{ needs.setup.outputs.PHP_VERSION }}
 
   phpstan:
+    if: false # TODO: refactor cache keys and re-enable
     name: Perform Phpstan Check
     needs:
       - setup
@@ -117,6 +113,7 @@ jobs:
       PHP_VERSION: ${{ needs.setup.outputs.PHP_VERSION }}
 
   pest:
+    if: false # TODO: refactor cache keys and re-enable
     name: Perform Pest Tests
     needs:
       - setup
