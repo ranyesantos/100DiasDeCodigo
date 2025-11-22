@@ -1,0 +1,24 @@
+{
+    "name": "he4rt/submission",
+    "description": "",
+    "type": "library",
+    "version": "1.0",
+    "license": "proprietary",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "He4rt\\Submission\\": "src/",
+            "He4rt\\Submission\\Tests\\": "tests/",
+            "He4rt\\Submission\\Database\\Factories\\": "database/factories/",
+            "He4rt\\Submission\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "He4rt\\Submission\\Providers\\SubmissionServiceProvider"
+            ]
+        }
+    }
+}
