@@ -1,8 +1,7 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-@source '../../../../app/Filament/Admin/**/*';
-@source '../../../../resources/views/filament/admin/**/*';
-@source '../../../../app-modules/*/resources/**/*';
+@source '../../../../app/Filament/Guest/**/*';
+@source '../../../../resources/views/filament/guest/**/*';
 
 :root {
     --gray-50: oklch(0.989 0.005 286.303) !important;
