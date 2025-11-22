@@ -15,9 +15,11 @@ final class DatabaseSeeder extends Seeder
     public function run(): void
     {
         if (app()->isLocal()) {
-            User::factory()->admin()->create();
+            User::factory()->admin()->create([
+                'name' => 'Linus Torvalds',
+                'username' => 'torvalds',
+            ]);
         }
 
-        User::factory(10)->create();
     }
 }

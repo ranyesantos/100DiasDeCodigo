@@ -8,6 +8,7 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
+use He4rt\Submission\Models\Concerns\InteractsWithSubmissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,7 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Has
     /** @use HasFactory<UserFactory> */
     use HasFactory;
     use InteractsWithMedia;
+    use InteractsWithSubmissions;
     use Notifiable;
 
     /**
@@ -30,6 +32,7 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Has
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
     ];
@@ -46,14 +49,15 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Has
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return match ($panel->getId()) {
+            'admin' => in_array($this->username, ['danielhe4rt', 'gvieira18']),
+            default => true
+        };
     }
 
-    public function getFilamentAvatarUrl(): ?string
+    public function getFilamentAvatarUrl(): string
     {
-        $avatar = $this->getFirstMedia('profile-pictures');
-
-        return $avatar?->getUrl();
+        return sprintf('https://github.com/%s.png', $this->username);
     }
 
     /**
