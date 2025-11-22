@@ -8,7 +8,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
@@ -84,7 +83,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configureHttp(): void
     {
-        Http::preventStrayRequests();
+        // Http::preventStrayRequests();
     }
 
     private function registerTelescope(): void
@@ -96,7 +95,8 @@ final class AppServiceProvider extends ServiceProvider
 
     private function registerDebugbar(): void
     {
-        if (app()->isLocal()
+        if (
+            app()->isLocal()
             && app()->hasDebugModeEnabled()
             && class_exists(\Barryvdh\Debugbar\ServiceProvider::class)
             && config('debugbar.enabled')
