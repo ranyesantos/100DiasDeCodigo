@@ -23,6 +23,8 @@ class PortalPage extends Dashboard
 
     protected string $coverImage;
 
+    protected string $url;
+
     protected static ?string $navigationLabel = 'Portal';
 
     protected Width|string|null $maxContentWidth = Width::Full;
@@ -30,6 +32,7 @@ class PortalPage extends Dashboard
     public function mount(): void
     {
         $this->coverImage = asset('images/portal-cover.png');
+        $this->url = url()->current();
 
         $this->registerMetaTags();
     }
@@ -49,6 +52,7 @@ class PortalPage extends Dashboard
         FilamentView::registerRenderHook(
             PanelsRenderHook::HEAD_START,
             fn (): string => Blade::render('portal::components.head.meta-tags', [
+                'url' => $this->url,
                 'title' => $this->getTitle(),
                 'description' => $this->description,
                 'coverImage' => $this->coverImage,
