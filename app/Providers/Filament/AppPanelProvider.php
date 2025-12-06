@@ -50,8 +50,7 @@ class AppPanelProvider extends PanelProvider
                     ->label('Ir para o administrativo')
                     ->icon(Heroicon::BuildingOffice2)
                     ->visible(fn () => auth()->user()?->isAdmin())
-                    ->url(url: fn () => Filament::getPanel('admin')->getUrl(),
-                        shouldOpenInNewTab: true),
+                    ->url(url: fn () => Filament::getPanel('admin')->getUrl()),
             ])
             ->plugins([
                 FilamentSocialitePlugin::make()
