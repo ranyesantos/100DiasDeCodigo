@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use App\Filament\Shared\Pages\LoginPage;
 use Filament\Actions\Action;
 use Filament\Enums\UserMenuPosition;
 use Filament\Facades\Filament;
@@ -34,7 +33,6 @@ final class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login(LoginPage::class)
             ->topbar(true)
             ->topNavigation(false)
             ->sidebarCollapsibleOnDesktop()
