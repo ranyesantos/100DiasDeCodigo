@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace He4rt\User\Filament\Pages;
 
+use App\Models\User;
+use DutchCodingCompany\FilamentSocialite\Models\SocialiteUser;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\CanUseDatabaseTransactions;
 use Filament\Pages\Dashboard;
@@ -30,6 +32,16 @@ class UserDashboard extends Dashboard
     public function mount(): void
     {
         $this->submissionForm->fill([]);
+    }
+
+    public function getHeading(): string
+    {
+        return '';
+    }
+
+    public function getSubheading(): ?string
+    {
+        return null;
     }
 
     public function submissionForm(Schema $schema): Schema
@@ -76,5 +88,18 @@ class UserDashboard extends Dashboard
             ->send();
 
         auth()->user()->invalidateSubmissionStatsCache();
+    }
+
+    protected function getViewData(): array
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        return [
+            'hasTwitterIntegration' => SocialiteUser::query()
+                ->where('user_id', $user->id)
+                ->where('provider', 'twitter')
+                ->exists(),
+        ];
     }
 }

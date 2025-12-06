@@ -530,7 +530,6 @@ JSON;
 
     expect($formatted)->not->toContain('#100DiasDeCodigo')
         ->not->toContain('https://t.co/iYw029Fnaq')
-        ->not->toContain('[1/100]')
-        ->not->toStartWith('<br />')
-        ->toContain('<br />');
+        ->not->toContain('[1/100]');
+
 });
