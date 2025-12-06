@@ -7,9 +7,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "He4rt\\IntegrationTwitterApi\\": "src/",
-            "He4rt\\IntegrationTwitterApi\\Database\\Factories\\": "database/factories/",
-            "He4rt\\IntegrationTwitterApi\\Database\\Seeders\\": "database/seeders/"
+            "He4rt\\IntegrationTwitterApi\\": "src/"
         }
     },
     "minimum-stability": "stable",
