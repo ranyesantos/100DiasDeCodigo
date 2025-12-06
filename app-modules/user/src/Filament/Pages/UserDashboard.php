@@ -46,9 +46,9 @@ class UserDashboard extends Dashboard
                 ->whereDate('submitted_at', today())
                 ->exists();
 
-            //            if ($exists) {
-            //                $this->halt();
-            //            }
+            if ($exists) {
+                $this->halt();
+            }
         } catch (Throwable) {
             Notification::make()
                 ->danger()

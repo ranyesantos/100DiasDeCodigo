@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('submissions', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(User::class)
-                ->nullable()
                 ->constrained('users');
             $table->foreignIdFor(User::class, 'approver_id')
                 ->nullable()

@@ -3058,7 +3058,7 @@
             "dist": {
                 "type": "path",
                 "url": "app-modules/integration-twitter-api",
-                "reference": "f508a2d3b40163eaec09f2c85273ae33b0753b51"
+                "reference": "bcc664536a49e1127db7902b9f8d0dce4b3c8ac9"
             },
             "type": "library",
             "extra": {
@@ -3118,13 +3118,13 @@
             "dist": {
                 "type": "path",
                 "url": "app-modules/submission",
-                "reference": "32a01f388282b5c088081b69b26e17c9e8b31de9"
+                "reference": "f93f82e34593ac1519700a2ef1d41aef1b486c11"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "He4rt\\Submission\\Providers\\SubmissionServiceProvider"
+                        "He4rt\\Submission\\SubmissionServiceProvider"
                     ]
                 }
             },

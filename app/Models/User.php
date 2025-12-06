@@ -50,7 +50,7 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Has
     public function canAccessPanel(Panel $panel): bool
     {
         return match ($panel->getId()) {
-            'admin' => in_array($this->username, ['danielhe4rt', 'gvieira18']),
+            'admin' => in_array($this->username, ['danielhe4rt', 'gvieira18', 'torvalds']),
             default => true
         };
     }

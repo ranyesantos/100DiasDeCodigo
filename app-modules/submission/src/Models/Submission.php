@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace He4rt\Submission\Models;
 
 use App\Models\User;
+use He4rt\IntegrationTwitterApi\DTOs\TweetDTO;
 use He4rt\Submission\Database\Factories\SubmissionFactory;
+use He4rt\Submission\Enums\SubmissionStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,10 +26,11 @@ class Submission extends Model
         'submitted_at',
         'user_id',
         'content',
-        'tweet_url',
+        'tweet_id',
         'status',
         'approved_at',
         'approver_id',
+        'metadata',
     ];
 
     /**
@@ -45,11 +49,31 @@ class Submission extends Model
         return $this->belongsTo(User::class, 'approver_id');
     }
 
+    public function getTweet(): TweetDTO
+    {
+        return TweetDTO::fromArray($this->metadata);
+    }
+
+    protected function progress(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $text = $this->getTweet()->text;
+                // Matches 1/100, 1 / 100
+                preg_match('/(\d+)\s*\/\s*(\d+)/', $text, $matches);
+
+                return $matches !== [] ? str($matches[0])->replace(' ', '')->toString() : null;
+            }
+        );
+    }
+
     protected function casts(): array
     {
         return [
-            'submitted_at' => 'timestamp',
-            'approved_at' => 'timestamp',
+            'submitted_at' => 'datetime',
+            'approved_at' => 'datetime',
+            'metadata' => 'json',
+            'status' => SubmissionStatus::class,
         ];
     }
 }

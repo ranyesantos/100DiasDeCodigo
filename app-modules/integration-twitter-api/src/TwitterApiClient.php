@@ -31,6 +31,8 @@ final readonly class TwitterApiClient
             throw new Exception($response->body());
         }
 
+        dump($response->json());
+
         return AdvancedSearchResponse::fromArray($response->json());
     }
 }

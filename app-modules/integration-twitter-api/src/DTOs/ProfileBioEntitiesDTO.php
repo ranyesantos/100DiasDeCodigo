@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace He4rt\IntegrationTwitterApi\DTOs;
 
-readonly class ProfileBioEntitiesDTO
+use JsonSerializable;
+
+readonly class ProfileBioEntitiesDTO implements JsonSerializable
 {
     /**
      * @param  UrlEntityDTO[]|null  $descriptionUrls
@@ -29,5 +31,13 @@ readonly class ProfileBioEntitiesDTO
             descriptionUrls: $descriptionUrls,
             urlUrls: $urlUrls,
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'description' => $this->descriptionUrls ? ['urls' => array_map(fn (UrlEntityDTO $dto) => $dto->jsonSerialize(), $this->descriptionUrls)] : null,
+            'url' => $this->urlUrls ? ['urls' => array_map(fn (UrlEntityDTO $dto) => $dto->jsonSerialize(), $this->urlUrls)] : null,
+        ];
     }
 }

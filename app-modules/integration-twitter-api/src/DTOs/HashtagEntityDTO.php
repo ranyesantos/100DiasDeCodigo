@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace He4rt\IntegrationTwitterApi\DTOs;
 
-readonly class HashtagEntityDTO
+use JsonSerializable;
+
+readonly class HashtagEntityDTO implements JsonSerializable
 {
     public function __construct(
         public string $text,
@@ -17,5 +19,13 @@ readonly class HashtagEntityDTO
             text: $data['text'],
             indices: $data['indices'],
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'text' => $this->text,
+            'indices' => $this->indices,
+        ];
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace He4rt\IntegrationTwitterApi\DTOs;
 
-readonly class UserDTO
+use JsonSerializable;
+
+readonly class UserDTO implements JsonSerializable
 {
     public function __construct(
         public string $id,
@@ -24,6 +26,15 @@ readonly class UserDTO
         public int $mediaCount,
         public int $statusesCount,
         public ?ProfileBioDTO $profileBio,
+        public bool $canMediaTag = false,
+        public int $fastFollowersCount = 0,
+        public ?string $status = null,
+        public array $withheldInCountries = [],
+        public array $affiliatesHighlightedLabel = [],
+        public bool $possiblySensitive = false,
+        public array $pinnedTweetIds = [],
+        public bool $isAutomated = false,
+        public ?string $automatedBy = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -46,6 +57,47 @@ readonly class UserDTO
             mediaCount: $data['mediaCount'],
             statusesCount: $data['statusesCount'],
             profileBio: isset($data['profile_bio']) ? ProfileBioDTO::fromArray($data['profile_bio']) : null,
+            canMediaTag: $data['canMediaTag'] ?? false,
+            fastFollowersCount: $data['fastFollowersCount'] ?? 0,
+            status: $data['status'] ?? null,
+            withheldInCountries: $data['withheldInCountries'] ?? [],
+            affiliatesHighlightedLabel: $data['affiliatesHighlightedLabel'] ?? [],
+            possiblySensitive: $data['possiblySensitive'] ?? false,
+            pinnedTweetIds: $data['pinnedTweetIds'] ?? [],
+            isAutomated: $data['isAutomated'] ?? false,
+            automatedBy: $data['automatedBy'] ?? null,
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'userName' => $this->userName,
+            'profilePicture' => $this->profilePicture,
+            'coverPicture' => $this->coverPicture,
+            'description' => $this->description,
+            'location' => $this->location,
+            'followers' => $this->followers,
+            'following' => $this->following,
+            'isBlueVerified' => $this->isBlueVerified,
+            'verifiedType' => $this->verifiedType,
+            'canDm' => $this->canDm,
+            'createdAt' => $this->createdAt,
+            'favouritesCount' => $this->favouritesCount,
+            'mediaCount' => $this->mediaCount,
+            'statusesCount' => $this->statusesCount,
+            'profile_bio' => $this->profileBio?->jsonSerialize(),
+            'canMediaTag' => $this->canMediaTag,
+            'fastFollowersCount' => $this->fastFollowersCount,
+            'status' => $this->status,
+            'withheldInCountries' => $this->withheldInCountries,
+            'affiliatesHighlightedLabel' => $this->affiliatesHighlightedLabel,
+            'possiblySensitive' => $this->possiblySensitive,
+            'pinnedTweetIds' => $this->pinnedTweetIds,
+            'isAutomated' => $this->isAutomated,
+            'automatedBy' => $this->automatedBy,
+        ];
     }
 }
