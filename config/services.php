@@ -48,6 +48,7 @@ return [
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
         'redirect' => env('TWITTER_REDIRECT_URI'),
         'oauth' => 2,
+        'api_key' => env('TWITTER_API_KEY'),
     ],
 
 ];
