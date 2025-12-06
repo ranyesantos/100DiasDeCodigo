@@ -4,20 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Shared\Pages;
 
-use Filament\Auth\Pages\Login;
+use Filament\Auth\Pages\Login as FilamentLoginPage;
 
-final class LoginPage extends Login
+final class LoginPage extends FilamentLoginPage
 {
-    public function mount(): void
-    {
-        parent::mount();
+    protected string $view = 'filament.shared.pages.login';
 
-        if (! app()->isProduction()) {
-            $this->form->fill([
-                'email' => 'admin@admin.com',
-                'password' => 'password',
-                'remember' => true,
-            ]);
-        }
-    }
+    protected ?string $heading = null;
 }

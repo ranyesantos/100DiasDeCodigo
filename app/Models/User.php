@@ -47,10 +47,15 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Has
         'remember_token',
     ];
 
+    public function isAdmin(): bool
+    {
+        return in_array($this->username, config('he4rt.admins'));
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return match ($panel->getId()) {
-            'admin' => in_array($this->username, ['danielhe4rt', 'gvieira18']),
+            'admin' => $this->isAdmin(),
             default => true
         };
     }
