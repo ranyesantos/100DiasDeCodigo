@@ -54,6 +54,15 @@ class AppPanelProvider extends PanelProvider
                     ) {
                         $query = User::query();
 
+                        $user = $query
+                            ->where('email', $oauthUser->getEmail())
+                            ->orWhere('username', $oauthUser->getNickname())
+                            ->first();
+
+                        if ($user) {
+                            return $user;
+                        }
+
                         return $query->create([
                             'name' => $oauthUser->getName(),
                             'email' => $oauthUser->getEmail(),
@@ -61,12 +70,15 @@ class AppPanelProvider extends PanelProvider
                         ]);
                     })
                     ->providers([
-                        // Create a provider 'gitlab' corresponding to the Socialite driver with the same name.
                         Provider::make('github')
                             ->label('GitHub')
                             ->icon('fab-github')
                             ->color(Color::hex('#2f2a6b'))
                             ->scopes(config('services.github.scopes')),
+                        Provider::make('twitter')
+                            ->label('Twitter')
+                            ->icon('fab-twitter')
+                            ->color(Color::Blue),
                     ]),
             ])
             ->pages([
