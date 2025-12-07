@@ -148,6 +148,9 @@ class SubmissionResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<Submission>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -156,6 +159,9 @@ class SubmissionResource extends Resource
             ]);
     }
 
+    /**
+     * @return Builder<Submission>
+     */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['approver', 'user']);
@@ -166,6 +172,9 @@ class SubmissionResource extends Resource
         return ['approver.name', 'user.name'];
     }
 
+    /**
+     * @param  Submission  $record
+     */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         $details = [];

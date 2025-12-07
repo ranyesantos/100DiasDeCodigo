@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace He4rt\Submission\Models;
 
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use He4rt\IntegrationTwitterApi\DTOs\TweetDTO;
 use He4rt\Submission\Database\Factories\SubmissionFactory;
 use He4rt\Submission\Enums\SubmissionStatus;
@@ -15,6 +16,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $approver_id
+ * @property string|null $tweet_id
+ * @property string $content markdown
+ * @property SubmissionStatus|string $status pending, rejected, approved
+ * @property CarbonImmutable $submitted_at
+ * @property CarbonImmutable|null $approved_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property array<string, mixed>|null $metadata
+ * @property-read string|null $progress
+ * @property-read User|null $user
+ * @property-read User|null $approver
+ * @property-read TweetDTO $tweet
+ */
 class Submission extends Model
 {
     /** @use HasFactory<SubmissionFactory> */
@@ -54,6 +73,9 @@ class Submission extends Model
         return TweetDTO::fromArray($this->metadata);
     }
 
+    /**
+     * @return Attribute<string|null, void>
+     */
     protected function progress(): Attribute
     {
         return Attribute::make(

@@ -7,16 +7,20 @@ namespace He4rt\Portal\Pages;
 use App\Models\User;
 use Filament\Pages\Page;
 use Filament\Support\Enums\Width;
+use He4rt\Submission\Models\Submission;
 use Illuminate\Database\Eloquent\Collection;
 
 class PublicUserProfilePage extends Page
 {
     public User $user;
 
+    /** @var Collection<int, Submission> */
     public Collection $submissions;
 
+    /** @var array<string, int> */
     public array $stats = [];
 
+    /** @var array{likes: int, retweets: int, replies: int, quotes: int, views: int} */
     public array $twitterMetrics = [
         'likes' => 0,
         'retweets' => 0,
@@ -61,6 +65,7 @@ class PublicUserProfilePage extends Page
 
     protected function calculateTwitterMetrics(): void
     {
+        /** @var Submission $submission */
         foreach ($this->submissions as $submission) {
             $tweet = $submission->getTweet();
             $this->twitterMetrics['likes'] += $tweet->likeCount;
