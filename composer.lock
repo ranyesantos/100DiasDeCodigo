@@ -3058,7 +3058,7 @@
             "dist": {
                 "type": "path",
                 "url": "app-modules/integration-twitter-api",
-                "reference": "bcc664536a49e1127db7902b9f8d0dce4b3c8ac9"
+                "reference": "34982112095646aae01bff2eff27f32c80f4c868"
             },
             "type": "library",
             "extra": {
@@ -3070,9 +3070,12 @@
             },
             "autoload": {
                 "psr-4": {
-                    "He4rt\\IntegrationTwitterApi\\": "src/",
-                    "He4rt\\IntegrationTwitterApi\\Database\\Factories\\": "database/factories/",
-                    "He4rt\\IntegrationTwitterApi\\Database\\Seeders\\": "database/seeders/"
+                    "He4rt\\IntegrationTwitterApi\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "He4rt\\IntegrationTwitterApi\\Tests\\": "tests/"
                 }
             },
             "license": [
@@ -6645,16 +6648,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.15",
+            "version": "v0.12.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "38953bc71491c838fcb6ebcbdc41ab7483cd549c"
+                "reference": "ee6d5028be4774f56c6c2c85ec4e6bc9acfe6b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/38953bc71491c838fcb6ebcbdc41ab7483cd549c",
-                "reference": "38953bc71491c838fcb6ebcbdc41ab7483cd549c",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/ee6d5028be4774f56c6c2c85ec4e6bc9acfe6b67",
+                "reference": "ee6d5028be4774f56c6c2c85ec4e6bc9acfe6b67",
                 "shasum": ""
             },
             "require": {
@@ -6662,8 +6665,8 @@
                 "ext-tokenizer": "*",
                 "nikic/php-parser": "^5.0 || ^4.0",
                 "php": "^8.0 || ^7.4",
-                "symfony/console": "^7.0 || ^6.0 || ^5.0 || ^4.0 || ^3.4",
-                "symfony/var-dumper": "^7.0 || ^6.0 || ^5.0 || ^4.0 || ^3.4"
+                "symfony/console": "^8.0 || ^7.0 || ^6.0 || ^5.0 || ^4.0 || ^3.4",
+                "symfony/var-dumper": "^8.0 || ^7.0 || ^6.0 || ^5.0 || ^4.0 || ^3.4"
             },
             "conflict": {
                 "symfony/console": "4.4.37 || 5.3.14 || 5.3.15 || 5.4.3 || 5.4.4 || 6.0.3 || 6.0.4"
@@ -6718,9 +6721,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.15"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.16"
             },
-            "time": "2025-11-28T00:00:14+00:00"
+            "time": "2025-12-07T03:39:01+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
-
 use He4rt\Submission\Models\Submission;
 
 it('can extract progress from tweet text', function (): void {
@@ -71,7 +69,7 @@ it('can extract progress with curly braces', function (): void {
         'isReply' => false,
     ];
 
-    expect($submission->progress)->toBe('4 / 100');
+    expect($submission->progress)->toBe('4/100');
 });
 
 it('can extract progress without brackets', function (): void {
@@ -105,7 +103,7 @@ it('can extract progress without brackets', function (): void {
         'isReply' => false,
     ];
 
-    expect($submission->progress)->toBe('4 / 100');
+    expect($submission->progress)->toBe('4/100');
 });
 
 it('returns null if no progress found', function (): void {
