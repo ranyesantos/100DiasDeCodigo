@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\SocialiteUserFactory;
 use DutchCodingCompany\FilamentSocialite\Models\SocialiteUser as BaseSocialiteUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Override;
 
 class SocialiteUser extends BaseSocialiteUser
 {
+    /** @use HasFactory<SocialiteUserFactory> */
     use HasFactory;
 
     protected $fillable = [
