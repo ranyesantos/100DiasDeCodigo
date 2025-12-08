@@ -52,4 +52,15 @@ readonly class EntitiesDTO implements JsonSerializable
             'media' => array_map(fn (MediaEntityDTO $dto) => $dto->jsonSerialize(), $this->media),
         ];
     }
+
+    public function containsHashtag(string $hashtag): bool
+    {
+        $hashtag = str($hashtag)
+            ->replace('#', '')
+            ->lower()
+            ->toString();
+
+        return collect($this->hashtags)
+            ->contains(fn (HashtagEntityDTO $entity) => mb_strtolower($entity->text) === $hashtag);
+    }
 }

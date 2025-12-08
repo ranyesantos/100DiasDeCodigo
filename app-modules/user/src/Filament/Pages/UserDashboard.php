@@ -11,6 +11,7 @@ use Filament\Pages\Concerns\CanUseDatabaseTransactions;
 use Filament\Pages\Dashboard;
 use Filament\Schemas\Schema;
 use He4rt\Submission\Enums\SubmissionStatus;
+use He4rt\Submission\Filament\App\Resources\Submissions\Actions\NewSubmissionAction;
 use He4rt\Submission\Filament\App\Resources\Submissions\Schemas\SubmissionForm;
 use He4rt\Submission\Models\Submission;
 use Throwable;
@@ -88,6 +89,13 @@ class UserDashboard extends Dashboard
             ->send();
 
         auth()->user()->invalidateSubmissionStatsCache();
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            NewSubmissionAction::make(),
+        ];
     }
 
     protected function getViewData(): array

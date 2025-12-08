@@ -7,6 +7,8 @@ namespace He4rt\IntegrationTwitterApi;
 use Exception;
 use He4rt\IntegrationTwitterApi\Endpoints\AdvancedSearch\AdvancedSearchRequest;
 use He4rt\IntegrationTwitterApi\Endpoints\AdvancedSearch\AdvancedSearchResponse;
+use He4rt\IntegrationTwitterApi\Endpoints\FindTweet\FindTweetRequest;
+use He4rt\IntegrationTwitterApi\Endpoints\FindTweet\FindTweetResponse;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -31,8 +33,20 @@ final readonly class TwitterApiClient
             throw new Exception($response->body());
         }
 
-        dump($response->json());
-
         return AdvancedSearchResponse::fromArray($response->json());
+    }
+
+    public function findTweets(FindTweetRequest $request): FindTweetResponse
+    {
+        $response = $this
+            ->client
+            ->withQueryParameters($request->jsonSerialize())
+            ->get('/twitter/tweets');
+
+        if ($response->failed()) {
+            throw new Exception($response->body());
+        }
+
+        return FindTweetResponse::fromArray($response->json());
     }
 }
