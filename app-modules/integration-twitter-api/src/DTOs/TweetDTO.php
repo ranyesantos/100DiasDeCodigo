@@ -170,4 +170,14 @@ readonly class TweetDTO implements JsonSerializable
 
         return mb_ltrim($text);
     }
+
+    public function getDailyCount(): ?string
+    {
+        $pattern = '/(?:\[|\꒰)?\s*(\d+)\s*\/\s*\d+(?:\s*(?:\]|\꒱))?/';
+        if (preg_match($pattern, $this->text, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
+    }
 }
