@@ -48,7 +48,7 @@ class RefreshSubmissionsAction extends Action
         );
         $response = cache()
             ->remember(
-                'refresh_'.$searchUntilDate,
+                'refresh_'.$searchUntilDate.'_'.$socialiteUser->username,
                 hours(10),
                 fn () => $client->advancedSearch(AdvancedSearchRequest::make($payload))
             );
