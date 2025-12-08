@@ -1,8 +1,6 @@
 @props([
     'status' => 'pending',
-    //pending,
-    complete,
-    missed'day' => 1,
+    'day' => 1,
     'date' => null,
     'submission' => null,
 ])

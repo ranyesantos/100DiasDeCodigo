@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Filament\Shared\Pages\LoginPage;
+use App\Models\SocialiteUser;
 use App\Models\User;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
@@ -54,6 +55,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentSocialitePlugin::make()
+                    ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration(function ($provider): bool {
                         if (! auth()->check() && $provider === 'github') {
                             return true;
