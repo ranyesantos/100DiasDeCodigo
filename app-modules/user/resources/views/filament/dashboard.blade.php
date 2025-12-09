@@ -2,7 +2,7 @@
     'hasTwitterIntegration',
 ])
 <x-filament-panels::page>
-    <x-dashboard.progress-overview />
+    {{-- <x-dashboard.progress-overview /> --}}
     <div class="space-y-6">
         @if (! $hasTwitterIntegration)
             <x-filament::section :secondary="true" icon="fab-twitter" heading="Conecte sua conta do Twitter">
@@ -38,8 +38,8 @@
             </div>
             <div class="space-y-8">
                 <livewire:daily-motivation-section />
-                <livewire:next-milestone-section />
-                <livewire:community-highlight-section />
+                {{-- <livewire:next-milestone-section /> --}}
+                {{-- <livewire:community-highlight-section /> --}}
             </div>
         </div>
     </div>
