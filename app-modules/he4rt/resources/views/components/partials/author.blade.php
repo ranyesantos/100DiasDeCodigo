@@ -38,8 +38,9 @@
     </div>
 
     <div class="hp-author-content">
-        <span class="hp-author-name">{{ $name }}</span>
+        <span class="hp-author-name" x-text="participant.name">{{ $name }}</span>
 
+        <span class="hp-author-title" x-text="participant.username"></span>
         @if ($title)
             <span class="hp-author-title">{{ $title }}</span>
         @endif

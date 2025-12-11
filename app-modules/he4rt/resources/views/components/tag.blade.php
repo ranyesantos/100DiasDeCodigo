@@ -34,7 +34,7 @@
         </div>
     @endisset
 
-    <span class="hp-tag-text">
+    <span class="hp-tag-text" x-text="tag">
         {{ $slot }}
     </span>
 </{{ $tag }}>
