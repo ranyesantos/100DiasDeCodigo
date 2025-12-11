@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\ParticipantsPage;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -47,6 +48,7 @@ class GuestPanelProvider extends PanelProvider
             ->pages([
                 PortalPage::class,
                 PublicUserProfilePage::class,
+                ParticipantsPage::class,
             ])
             ->viteTheme('app-modules/he4rt/resources/css/theme.css')
             ->discoverWidgets(in: app_path('Filament/Guest/Widgets'), for: 'App\Filament\Guest\Widgets')
