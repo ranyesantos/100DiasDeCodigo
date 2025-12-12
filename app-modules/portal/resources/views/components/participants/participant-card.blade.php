@@ -9,9 +9,8 @@
 ])
 
 <x-he4rt::card
-    class="group bg-card/50 hover:border-primary/50 hover:bg-card/80 flex w-full cursor-pointer justify-start gap-0 rounded-2xl border border-white/50 p-5 backdrop-blur-sm transition-all duration-300"
+    class="bg-primary/6 relative cursor-pointer rounded-2xl p-5 backdrop-blur-sm transition-all duration-300"
 >
-    <!-- TODO: a barra de progresso dentro de titulo?? status do usuario dentro de description?? ta certo isso ai?-->
     <x-slot:header class="p-1">
         <x-he4rt::partials.author
             size="lg"
@@ -27,15 +26,15 @@
     </x-slot>
 
     <x-slot:description>
-        <div class="flex flex-row justify-around">
+        <div class="flex flex-row items-center justify-center gap-3">
             <!-- current streak -->
             <x-portal::participants.wrappers.user-stats-card>
                 <x-slot:icon>
-                    <x-filament::icon icon="heroicon-s-fire" class="h-3 w-3 text-orange-500" />
+                    <x-filament::icon icon="heroicon-s-fire" class="h-4 w-4 text-orange-500" />
                 </x-slot>
 
                 <x-slot:title>
-                    <span x-text="participant.twitterMetrics.current_streak"></span>
+                    <span x-text="participant.current_streak"></span>
                 </x-slot>
 
                 <x-slot:description>Streak</x-slot>
@@ -44,11 +43,11 @@
             <!-- likes -->
             <x-portal::participants.wrappers.user-stats-card>
                 <x-slot:icon>
-                    <x-filament::icon icon="heroicon-o-heart" class="h-3 w-3 text-pink-500" />
+                    <x-filament::icon icon="heroicon-o-heart" class="h-4 w-4 text-pink-500" />
                 </x-slot>
 
                 <x-slot:title>
-                    <span x-text="participant.twitterMetrics.likes"></span>
+                    <span x-text="participant.twitter_metrics.likes"></span>
                 </x-slot>
 
                 <x-slot:description>Likes</x-slot>
@@ -57,11 +56,11 @@
             <!-- views -->
             <x-portal::participants.wrappers.user-stats-card>
                 <x-slot:icon>
-                    <x-filament::icon icon="heroicon-o-eye" class="h-3 w-3 text-blue-500" />
+                    <x-filament::icon icon="heroicon-o-eye" class="h-4 w-4 text-blue-500" />
                 </x-slot>
 
                 <x-slot:title>
-                    <span x-text="participant.twitterMetrics.views"></span>
+                    <span x-text="participant.twitter_metrics.views"></span>
                 </x-slot>
 
                 <x-slot:description>Views</x-slot>

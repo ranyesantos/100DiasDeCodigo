@@ -32,7 +32,7 @@
         <div class="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 md:grid-cols-4">
             @foreach ($counters as $counter)
                 <x-he4rt::card
-                    class="flex h-28 items-center justify-center gap-0 rounded-2xl border border-white/50"
+                    class="bg-primary/3 flex h-28 items-center justify-center gap-0 rounded-2xl"
                     :interactive="false"
                 >
                     <x-slot:icon class="flex items-center justify-center">
