@@ -12,12 +12,7 @@
     class="bg-primary/6 relative cursor-pointer rounded-2xl p-5 backdrop-blur-sm transition-all duration-300"
 >
     <x-slot:header class="p-1">
-        <x-he4rt::partials.author
-            size="lg"
-            src="https://avatars.githubusercontent.com/u/103362"
-            x-bind:name="participant.name"
-            title=""
-        />
+        <x-he4rt::partials.author size="lg" src="https://avatars.githubusercontent.com/u/103362" />
     </x-slot>
 
     <x-slot:title class="text-muted-foreground flex items-center justify-center pt-1 text-xs">

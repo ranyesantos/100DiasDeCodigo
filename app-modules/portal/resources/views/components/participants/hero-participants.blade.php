@@ -43,7 +43,7 @@
                         {{ $counter['value'] }}
                     </x-slot>
 
-                    <x-slot:description class="text-xs text-white">
+                    <x-slot:description class="text-light-500 text-xs">
                         {{ $counter['label'] }}
                     </x-slot>
                 </x-he4rt::card>

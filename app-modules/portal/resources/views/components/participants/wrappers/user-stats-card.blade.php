@@ -8,7 +8,7 @@
             {{ $icon ?? '' }}
         </x-slot>
 
-        <x-slot:description class="flex flex-col items-center justify-center text-sm text-white">
+        <x-slot:description class="flex flex-col items-center justify-center text-sm dark:text-white">
             <span class="font-bold">{{ $title ?? '' }}</span>
             <span>{{ $description ?? '' }}</span>
         </x-slot>
