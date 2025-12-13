@@ -6,17 +6,17 @@
     'defaultSort' => 'Progress',
     'defaultViewMode' => 'grid',
 ])
+
 <section
     class="container mx-auto max-w-7xl px-4 py-8"
     x-init="$watch('selectedSort', (value) => console.log('sorting:', value))"
     x-data="{
-        // selectedSort: $queryString('Progress').usePush().as('sort')
+        search: $queryString('').usePush().as('search'),
         selectedSort: $queryString('Progress').usePush().as('sort'),
         participants: @js($participants),
 
         get filteredParticipants() {
             let filteredParticipants = this.participants
-            console.log(filteredParticipants, 'antes')
 
             const sortMap = {
                 'Progress': (p) => p.total_days,
@@ -33,7 +33,16 @@
                         sortMap[this.selectedSort](a),
                 )
 
-            console.log(filteredParticipants, 'depois')
+            if (this.search) {
+                const term = this.search.toLowerCase()
+
+                filteredParticipants = filteredParticipants.filter(
+                    (i) =>
+                        i.username?.toLowerCase().includes(term) ||
+                        i.name?.toLowerCase().includes(term),
+                )
+            }
+
             return filteredParticipants
         },
     }"
@@ -95,30 +104,25 @@
                         <path d="m21 21-4.3-4.3"></path>
                     </svg>
                     <input
+                        x-model="search"
                         data-slot="input"
-                        class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-card/50 border-border/50 h-9 w-full min-w-0 rounded-md border px-3 py-1 pl-10 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                        placeholder="Search by name or username..."
+                        class="border-border bg-card/50 text-foreground placeholder:text-muted-foreground focus:ring-ring focus:border-ring dark:bg-input/30 h-9 w-full rounded-md border px-3 pl-10 text-sm focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        placeholder="Busque por nome ou username..."
                         value=""
                     />
                 </div>
-                <div class="flex items-center gap-2">
-                    <button
-                        id="mobileFilterBtn"
-                        class="rounded-md border border-gray-200 bg-white px-3 py-2 hover:bg-gray-100 lg:hidden dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+                <div class="flex items-center">
+                    <div
+                        class="gap-1justify-center flex flex-row items-center rounded-md border border-gray-200 bg-white p-2 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                     >
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                        </svg>
-                    </button>
-
-                    <select
-                        x-model="selectedSort"
-                        class="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
-                    >
-                        <option>Progress</option>
-                        <option>Streak</option>
-                        <option>Likes</option>
-                    </select>
+                        <x-filament::icon icon="heroicon-o-arrows-up-down" class="h-4 w-4" />
+                        <select class="border-0 bg-white text-sm dark:bg-gray-800" x-model="selectedSort">
+                            <option>Progress</option>
+                            <option>Streak</option>
+                            <option>Likes</option>
+                            <option>Views</option>
+                        </select>
+                    </div>
 
                     <div
                         class="hidden items-center rounded-lg border border-gray-200 bg-white p-1 sm:flex dark:border-gray-700 dark:bg-gray-800"
@@ -198,13 +202,12 @@
 
             <div class="mb-4 flex items-center justify-between">
                 <p class="text-muted-foreground text-sm">
-                    Showing
-                    <span class="text-foreground font-medium">{{ count($participants) }}</span>
-                    participants
+                    Exibindo
+                    <span class="text-foreground font-medium" x-text="filteredParticipants.length"></span>
+                    participantes
                 </p>
             </div>
 
-            <!-- todo: change the key, maybe?? -->
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 <template x-for="participant in filteredParticipants" :key="participant.username">
                     <x-portal::participants.participant-card />
