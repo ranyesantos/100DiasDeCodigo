@@ -23,7 +23,7 @@
         aria-valuemax="100"
     >
         <div
-            class="from-primary-500 mb-2 h-full rounded-full bg-gradient-to-r to-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)] transition-all duration-1000 ease-out"
+            class="from-primary-500 mb-2 h-full rounded-full bg-linear-to-r to-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)] transition-all duration-1000 ease-out"
             x-bind:style="`width: ${Math.min((participant.total_days / 100) * 100, 100)}%`"
             style="width: {{ min(($stats['total_days'] / 100) * 100, 100) }}%"
         ></div>

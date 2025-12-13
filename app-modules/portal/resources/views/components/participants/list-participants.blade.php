@@ -9,11 +9,42 @@
 
 <section
     class="container mx-auto max-w-7xl px-4 py-8"
-    x-init="$watch('selectedSort', (value) => console.log('sorting:', value))"
+    x-init="
+        $watch('selectedSort', (value) => console.log('sorting:', value))
+
+        //reseta a pagina em searching
+        $watch('search', (newValue, oldValue) => {
+            if (newValue !== oldValue) {
+                currentPage = 1
+            }
+        })
+        //reseta a página quando altera o sorting
+        $watch('[selectedSort]', () => {
+            currentPage = 1
+        })
+    "
     x-data="{
         search: $queryString('').usePush().as('search'),
         selectedSort: $queryString('Progress').usePush().as('sort'),
         participants: @js($participants),
+
+        _currentPage: $queryString(1).usePush().as('page'),
+        get currentPage() {
+            return +this._currentPage
+        },
+        set currentPage(value) {
+            this._currentPage = value
+            this.$nextTick(() => {
+                this.$refs.section.scrollIntoView({ behavior: 'smooth' })
+            })
+        },
+
+        //todo: alterar o perpage
+        perPage: 3,
+        totalItems: 0,
+        get totalPages() {
+            return Math.ceil(this.totalItems / this.perPage)
+        },
 
         get filteredParticipants() {
             let filteredParticipants = this.participants
@@ -42,6 +73,12 @@
                         i.name?.toLowerCase().includes(term),
                 )
             }
+
+            this.totalItems = filteredParticipants.length
+            filteredParticipants = filteredParticipants.slice(
+                (this.currentPage - 1) * this.perPage,
+                this.currentPage * this.perPage,
+            )
 
             return filteredParticipants
         },
@@ -208,10 +245,13 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3" x-ref="section">
                 <template x-for="participant in filteredParticipants" :key="participant.username">
                     <x-portal::participants.participant-card />
                 </template>
+            </div>
+            <div class="flex items-center justify-end px-1 pt-7">
+                <x-he4rt::pagination />
             </div>
         </main>
     </div>
