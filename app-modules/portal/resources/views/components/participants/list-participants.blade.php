@@ -8,6 +8,7 @@
 ])
 
 <section
+    x-ref="section"
     class="container mx-auto max-w-7xl px-4 py-8"
     x-init="
         $watch('selectedSort', (value) => console.log('sorting:', value))
@@ -91,27 +92,8 @@
                     <div class="space-y-6">
                         <div>
                             <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-sparkles text-primary h-4 w-4"
-                                >
-                                    <path
-                                        d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
-                                    ></path>
-                                    <path d="M20 3v4"></path>
-                                    <path d="M22 5h-4"></path>
-                                    <path d="M4 17v2"></path>
-                                    <path d="M5 18H3"></path>
-                                </svg>
-                                Field
+                                <x-filament::icon icon="heroicon-o-star" class="text-primary h-4 w-4" x-on::click="" />
+                                Campo
                             </h3>
                         </div>
                         <div>
@@ -125,21 +107,11 @@
         <main class="min-w-0 flex-1">
             <div class="mb-6 flex flex-col gap-4 sm:flex-row">
                 <div class="relative flex-1">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-search text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
-                    >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                    </svg>
+                    <x-filament::icon
+                        icon="heroicon-o-magnifying-glass"
+                        class="lucide lucide-search text-muted-foreground text-primary absolute top-1/2 left-3 me-2 h-4 w-4 -translate-y-1/2"
+                        x-on::click=""
+                    />
                     <input
                         x-model="search"
                         data-slot="input"
@@ -150,10 +122,10 @@
                 </div>
                 <div class="flex items-center">
                     <div
-                        class="gap-1justify-center flex flex-row items-center rounded-md border border-gray-200 bg-white p-2 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                        class="flex flex-row items-center justify-center gap-1 rounded-md border border-gray-200 bg-white p-2 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                     >
-                        <x-filament::icon icon="heroicon-o-arrows-up-down" class="h-4 w-4" />
-                        <select class="border-0 bg-white text-sm dark:bg-gray-800" x-model="selectedSort">
+                        <x-filament::icon icon="heroicon-o-arrows-up-down" class="me-2 h-4 w-4" x-on::click="" />
+                        <select class="border-0 bg-white text-sm outline-0 dark:bg-gray-800" x-model="selectedSort">
                             <option>Progress</option>
                             <option>Streak</option>
                             <option>Likes</option>
@@ -164,88 +136,29 @@
                     <div
                         class="hidden items-center rounded-lg border border-gray-200 bg-white p-1 sm:flex dark:border-gray-700 dark:bg-gray-800"
                     >
-                        <button id="gridView" class="rounded bg-blue-600 px-2 py-1 text-white">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <rect width="18" height="18" x="3" y="3" rx="2" />
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M3 9h18M3 15h18M9 3v18M15 3v18"
-                                />
-                            </svg>
+                        <button id="gridView" class="bg-primary rounded px-2 py-1 text-white">
+                            <x-filament::icon icon="heroicon-s-table-cells" class="h-4 w-4 text-white" x-on::click="" />
                         </button>
                         <button id="listView" class="rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <line
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    x1="8"
-                                    x2="21"
-                                    y1="6"
-                                    y2="6"
-                                />
-                                <line
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    x1="8"
-                                    x2="21"
-                                    y1="12"
-                                    y2="12"
-                                />
-                                <line
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    x1="8"
-                                    x2="21"
-                                    y1="18"
-                                    y2="18"
-                                />
-                                <line
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    x1="3"
-                                    x2="3.01"
-                                    y1="6"
-                                    y2="6"
-                                />
-                                <line
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    x1="3"
-                                    x2="3.01"
-                                    y1="12"
-                                    y2="12"
-                                />
-                                <line
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    x1="3"
-                                    x2="3.01"
-                                    y1="18"
-                                    y2="18"
-                                />
-                            </svg>
+                            <x-filament::icon icon="heroicon-o-list-bullet" class="h-4 w-4 text-white" x-on::click="" />
                         </button>
                     </div>
                 </div>
             </div>
 
             <div class="mb-4 flex items-center justify-between">
-                <p class="text-muted-foreground text-sm">
-                    Exibindo
-                    <span class="text-foreground font-medium" x-text="filteredParticipants.length"></span>
-                    participantes
-                </p>
+                <div x-show="filteredParticipants.length" class="text- mr-auto text-sm">
+                    Mostrando
+                    <span class="font-extrabold" x-text="(currentPage - 1) * perPage + 1"></span>
+                    até
+                    <span class="font-extrabold" x-text="Math.min(currentPage * perPage, totalItems)"></span>
+                    de
+                    <span class="font-extrabold" x-text="totalItems"></span>
+                    resultados
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3" x-ref="section">
+            <div x-ref="participantCardsWrapper" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 <template x-for="participant in filteredParticipants" :key="participant.username">
                     <x-portal::participants.participant-card />
                 </template>
