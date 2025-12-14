@@ -21,7 +21,13 @@
     </x-slot>
 
     <x-slot:description>
-        <div class="flex flex-row items-center justify-center gap-3">
+        <div
+            class="flex flex-row items-center gap-3"
+            :class="{
+                'flex justify-between': viewMode === 'list',
+                'flex justify-center': viewMode === 'grid',
+            }"
+        >
             <!-- current streak -->
             <x-portal::participants.wrappers.user-stats-card>
                 <x-slot:icon>

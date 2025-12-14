@@ -11,28 +11,25 @@
     x-ref="section"
     class="container mx-auto max-w-7xl px-4 py-8"
     x-init="
-        $watch('selectedSort', (value) => console.log('sorting:', value))
-
-        //reseta a pagina em searching
         $watch('search', (newValue, oldValue) => {
             if (newValue !== oldValue) {
                 currentPage = 1
             }
         })
-        //reseta a página quando altera o sorting
         $watch('[selectedSort]', () => {
             currentPage = 1
         })
     "
     x-data="{
-        search: $queryString('').usePush().as('search'),
-        selectedSort: $queryString('Progress').usePush().as('sort'),
+        search: '',
+        selectedSort: 'Progress',
         participants: @js($participants),
 
         _currentPage: $queryString(1).usePush().as('page'),
         get currentPage() {
             return +this._currentPage
         },
+
         set currentPage(value) {
             this._currentPage = value
             this.$nextTick(() => {
@@ -40,7 +37,19 @@
             })
         },
 
-        //todo: alterar o perpage
+        _viewMode: $queryString('grid').usePush().as('viewMode'),
+        get viewMode() {
+            return this._viewMode
+        },
+
+        set viewMode(value) {
+            this._viewMode = value
+            this.$nextTick(() => {
+                this.$refs.section.scrollIntoView({ behavior: 'smooth' })
+            })
+        },
+
+        //todo: chnge the perpage
         perPage: 3,
         totalItems: 0,
         get totalPages() {
@@ -137,10 +146,18 @@
                         class="hidden items-center rounded-lg border border-gray-200 bg-white p-1 sm:flex dark:border-gray-700 dark:bg-gray-800"
                     >
                         <button id="gridView" class="bg-primary rounded px-2 py-1 text-white">
-                            <x-filament::icon icon="heroicon-s-table-cells" class="h-4 w-4 text-white" x-on::click="" />
+                            <x-filament::icon
+                                icon="heroicon-s-table-cells"
+                                class="h-4 w-4 text-white"
+                                x-on:click="viewMode = 'grid'"
+                            />
                         </button>
                         <button id="listView" class="rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <x-filament::icon icon="heroicon-o-list-bullet" class="h-4 w-4 text-white" x-on::click="" />
+                            <x-filament::icon
+                                icon="heroicon-o-list-bullet"
+                                class="h-4 w-4 text-white"
+                                x-on:click="viewMode = 'list'"
+                            />
                         </button>
                     </div>
                 </div>
@@ -158,9 +175,15 @@
                 </div>
             </div>
 
-            <div x-ref="participantCardsWrapper" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div
+                x-ref="participantCardsWrapper"
+                :class="{
+                    'grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3': viewMode === 'grid',
+                    'flex flex-col gap-2': viewMode === 'list'
+                }"
+            >
                 <template x-for="participant in filteredParticipants" :key="participant.username">
-                    <x-portal::participants.participant-card />
+                    <x-portal::participants.participant-card x-bind:data-view-mode="viewMode" />
                 </template>
             </div>
             <div class="flex items-center justify-end px-1 pt-7">
