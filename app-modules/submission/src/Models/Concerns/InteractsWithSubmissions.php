@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Number;
 
 use function Illuminate\Support\minutes;
 
@@ -37,7 +38,8 @@ trait InteractsWithSubmissions
      */
     public function getSubmissionStats(): array
     {
-        return Cache::remember($this->getSubmissionStatsCacheKey(), minutes(1), fn () => $this->calculateSubmissionStats());
+        return Cache::remember($this->getSubmissionStatsCacheKey(), minutes(1),
+            fn () => $this->calculateSubmissionStats());
     }
 
     public function getSubmissionStatsCacheKey(): string
@@ -48,6 +50,20 @@ trait InteractsWithSubmissions
     public function invalidateSubmissionStatsCache(): void
     {
         Cache::forget($this->getSubmissionStatsCacheKey());
+    }
+
+    protected function getLikesAttribute(): int
+    {
+        return $this->submissions->sum(
+            fn (Submission $submission) => $submission->getTweet()->likeCount ?? 0
+        );
+    }
+
+    protected function getViewsAttribute(): int
+    {
+        return $this->submissions->sum(
+            fn (Submission $submission) => $submission->getTweet()->viewCount ?? 0
+        );
     }
 
     /**
@@ -167,5 +183,15 @@ trait InteractsWithSubmissions
     protected function getTotalSubmissionsAttribute(): int
     {
         return $this->getSubmissionStats()['total_submissions'];
+    }
+
+    protected function getLikesAbbreviateAttribute(): string
+    {
+        return Number::abbreviate($this->likes);
+    }
+
+    protected function getViewsAbbreviateAttribute(): string
+    {
+        return Number::abbreviate($this->views);
     }
 }

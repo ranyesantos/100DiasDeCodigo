@@ -19,6 +19,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 final class User extends Authenticatable implements FilamentUser, HasAvatar, HasMedia
 {
     use HasApiTokens;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory;
     use InteractsWithMedia;
@@ -35,6 +36,13 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Has
         'username',
         'email',
         'password',
+    ];
+
+    protected $appends = [
+        'likes_abbreviate',
+        'views_abbreviate',
+        'total_days',
+        'current_streak',
     ];
 
     /**

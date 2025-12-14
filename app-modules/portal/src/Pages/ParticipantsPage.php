@@ -9,12 +9,12 @@ use Filament\Pages\Page;
 use Filament\Support\Enums\Width;
 use He4rt\Submission\Models\Submission;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Number;
 use Spatie\Tags\Tag;
 
 class ParticipantsPage extends Page
 {
     public Collection $submissions;
+
     protected string $view = 'portal::filament.guest.pages.participants-page';
 
     protected array $counters = [
@@ -36,28 +36,38 @@ class ParticipantsPage extends Page
 
     public function mount(): void
     {
-        $this->technologies = Tag::query()->withType('technologies')->get();
+        $this->technologies = Tag::query()->withType('technologies')->get(); // TODO: cache
 
-        $users = User::query()->whereHas('submissions')
-            ->with('submissions')
-            ->get();
+        $this->users = User::query()
+            ->whereHas('submissions')
+            ->get()
+            ->map(function (User $user) {
+                $data = $user->toArray();
+                $data['avatar'] = $user->getFilamentAvatarUrl();
 
-        $this->users = $users->map(function ($user): array {
-            $metrics = self::calculateTwitterMetrics($user->submissions);
+                return $data;
+            })
+            ->all();
 
-            return [
-                'name' => $user->name,
-                'username' => $user->username,
-                'avatar' => $user->getFilamentAvatarUrl(),
-                'total_days' => Number::abbreviate($user->total_days),
-                'current_streak' => Number::abbreviate($user->current_streak),
-                'tags' => ['#php', '#vibecoding', '#laravel', 'alpine.js', '#fullstack'],
-                'twitter_metrics' => [
-                    'likes' => Number::abbreviate($metrics['likes']),
-                    'views' => Number::abbreviate($metrics['views']),
-                ],
-            ];
-        })->toArray();
+        dd($this->users);
+
+        //        $this->users = $users->map(function ($user): array {
+        //            $metrics = self::calculateTwitterMetrics($user->submissions);
+        //
+        //            return [
+        //                'name' => $user->name,
+        //                'username' => $user->username,
+        //                'avatar' => $user->getFilamentAvatarUrl(),
+        //                'total_days' => Number::abbreviate($user->total_days),
+        //                'current_streak' => Number::abbreviate($user->current_streak),
+        //                'tags' => ['#php', '#vibecoding', '#laravel', 'alpine.js', '#fullstack'],
+        //                'twitter_metrics' => [
+        //                    'likes' => Number::abbreviate($metrics['likes']),
+        //                    'views' => Number::abbreviate($metrics['views']),
+        //                ],
+        //            ];
+        //        })->toArray();
+
     }
 
     public function getHeading(): string
