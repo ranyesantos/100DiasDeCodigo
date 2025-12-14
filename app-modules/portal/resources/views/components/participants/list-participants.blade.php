@@ -8,6 +8,7 @@
 ])
 
 <section
+    x-load-js="[@js(\Filament\Support\Facades\FilamentAsset::getScriptSrc('autoAnimate'))]"
     x-ref="section"
     class="container mx-auto max-w-7xl px-4 py-8"
     x-init="
@@ -50,7 +51,7 @@
         },
 
         //todo: chnge the perpage
-        perPage: 3,
+        perPage: 4,
         totalItems: 0,
         get totalPages() {
             return Math.ceil(this.totalItems / this.perPage)
@@ -95,24 +96,6 @@
     }"
 >
     <div class="flex flex-col gap-8 lg:flex-row">
-        <aside class="hidden w-64 shrink-0 lg:block">
-            <div class="sticky top-24 space-y-6">
-                <div class="bg-card/50 border-border/50 rounded-2xl border p-5 backdrop-blur-sm">
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="mb-3 flex items-center gap-2 text-sm font-semibold">
-                                <x-filament::icon icon="heroicon-o-star" class="text-primary h-4 w-4" x-on::click="" />
-                                Campo
-                            </h3>
-                        </div>
-                        <div>
-                            <h3 class="mb-3 text-sm font-semibold">Technologies</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
         <main class="min-w-0 flex-1">
             <div class="mb-6 flex flex-col gap-4 sm:flex-row">
                 <div class="relative flex-1">
@@ -145,19 +128,21 @@
                     <div
                         class="hidden items-center rounded-lg border border-gray-200 bg-white p-1 sm:flex dark:border-gray-700 dark:bg-gray-800"
                     >
-                        <button id="gridView" class="bg-primary rounded px-2 py-1 text-white">
-                            <x-filament::icon
-                                icon="heroicon-s-table-cells"
-                                class="h-4 w-4 text-white"
-                                x-on:click="viewMode = 'grid'"
-                            />
+                        <button
+                            x-on:click="
+                                viewMode = 'grid';
+                            "
+                            class="bg-primary rounded px-2 py-1 text-white"
+                        >
+                            <x-filament::icon icon="heroicon-s-table-cells" class="h-4 w-4 text-white" />
                         </button>
-                        <button id="listView" class="rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700">
-                            <x-filament::icon
-                                icon="heroicon-o-list-bullet"
-                                class="h-4 w-4 text-white"
-                                x-on:click="viewMode = 'list'"
-                            />
+                        <button
+                            x-on:click="
+                                viewMode = 'list';
+                            "
+                            class="rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                            <x-filament::icon icon="heroicon-o-list-bullet" class="h-4 w-4 text-white" />
                         </button>
                     </div>
                 </div>
@@ -177,8 +162,9 @@
 
             <div
                 x-ref="participantCardsWrapper"
+                x-init="autoAnimate($refs.participantCardsWrapper)"
                 :class="{
-                    'grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3': viewMode === 'grid',
+                    'grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4': viewMode === 'grid',
                     'flex flex-col gap-2': viewMode === 'list'
                 }"
             >
