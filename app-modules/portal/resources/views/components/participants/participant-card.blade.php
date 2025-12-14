@@ -68,10 +68,4 @@
             </x-portal::participants.wrappers.user-stats-card>
         </div>
     </x-slot>
-
-    <x-slot:tags>
-        <template x-for="tag in participant.tags">
-            <x-he4rt::tag></x-he4rt::tag>
-        </template>
-    </x-slot>
 </x-he4rt::card>

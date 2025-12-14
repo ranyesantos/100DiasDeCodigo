@@ -7,7 +7,7 @@
         <h3 class="font-semibold text-gray-900 dark:text-white">Progress</h3>
         <span
             class="text-sm font-medium text-gray-500 dark:text-gray-400"
-            x-bind::aria-label="participant.total_days"
+            x-bind:aria-label="participant.total_days"
             aria-label="{{ $stats['total_days'] }} out of 100 days completed"
             x-text="participant.total_days + '/100'"
         >
@@ -18,7 +18,7 @@
         class="h-3 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800"
         role="progressbar"
         aria-valuenow="{{ $stats['total_days'] }}"
-        x-bind::aria-valuenow="participants.total_days"
+        x-bind:aria-valuenow="participants.total_days"
         aria-valuemin="0"
         aria-valuemax="100"
     >
