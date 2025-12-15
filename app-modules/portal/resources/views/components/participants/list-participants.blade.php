@@ -50,8 +50,7 @@
             })
         },
 
-        //todo: chnge the perpage
-        perPage: 4,
+        perPage: 24,
         totalItems: 0,
         get totalPages() {
             return Math.ceil(this.totalItems / this.perPage)

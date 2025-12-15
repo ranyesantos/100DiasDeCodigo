@@ -9,6 +9,8 @@
 ])
 
 <x-he4rt::card
+    href="#"
+    x-bind:href="'/u/' + participant.username"
     class="bg-primary/6 relative cursor-pointer rounded-2xl p-5 backdrop-blur-sm transition-all duration-300"
 >
     <x-slot:header class="p-1">
@@ -17,7 +19,7 @@
 
     <x-slot:title class="text-muted-foreground flex items-center justify-center pt-1 text-xs">
         <!-- profile progress-bar -->
-        <x-portal::profile.progress />
+        <x-portal::profile.progress :interactive="true" x-bind:total_days="participant.total_days" />
     </x-slot>
 
     <x-slot:description>
