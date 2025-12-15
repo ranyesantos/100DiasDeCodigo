@@ -62,8 +62,8 @@
             const sortMap = {
                 'Progress': (p) => p.total_days,
                 'Streak': (p) => p.current_streak,
-                'Likes': (p) => p.twitter_metrics.likes,
-                'Views': (p) => p.twitter_metrics.views,
+                'Likes': (p) => p.twitter_metrics.likes_raw,
+                'Views': (p) => p.twitter_metrics.views_raw,
             }
 
             filteredParticipants = filteredParticipants
@@ -111,9 +111,9 @@
                         value=""
                     />
                 </div>
-                <div class="flex items-center">
+                <div class="flex items-center gap-2">
                     <div
-                        class="flex flex-row items-center justify-center gap-1 rounded-md border border-gray-200 bg-white p-2 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                        class="flex flex-row items-center justify-center gap-1 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                     >
                         <x-filament::icon icon="heroicon-o-arrows-up-down" class="me-2 h-4 w-4" x-on::click="" />
                         <select class="border-0 bg-white text-sm outline-0 dark:bg-gray-800" x-model="selectedSort">
@@ -131,7 +131,10 @@
                             x-on:click="
                                 viewMode = 'grid';
                             "
-                            class="bg-primary rounded px-2 py-1 text-white"
+                            class="rounded px-2 py-1"
+                            :class="{
+                                'text-white bg-primary': viewMode === 'grid'
+                            }"
                         >
                             <x-filament::icon icon="heroicon-s-table-cells" class="h-4 w-4 text-white" />
                         </button>
@@ -139,7 +142,10 @@
                             x-on:click="
                                 viewMode = 'list';
                             "
-                            class="rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            class="rounded px-2 py-1"
+                            :class="{
+                                'text-white bg-primary': viewMode === 'list'
+                            }"
                         >
                             <x-filament::icon icon="heroicon-o-list-bullet" class="h-4 w-4 text-white" />
                         </button>
