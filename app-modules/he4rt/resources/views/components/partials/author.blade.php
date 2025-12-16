@@ -34,12 +34,19 @@
 
 <{{ $tag }} {{ $attributes->merge(['class' => $classes])->merge($linkAttrs) }}>
     <div>
-        <x-he4rt::avatar :src="$src" alt="{{ $name }}" :size="$size" :circular="true" />
+        <x-he4rt::avatar
+            :src="$src"
+            x-bind:src="participant.avatar"
+            alt="{{ $name }}"
+            :size="$size"
+            :circular="true"
+        />
     </div>
 
     <div class="hp-author-content">
-        <span class="hp-author-name">{{ $name }}</span>
+        <span class="hp-author-name" x-text="participant.name">{{ $name }}</span>
 
+        <span class="hp-author-title" x-text="participant.username"></span>
         @if ($title)
             <span class="hp-author-title">{{ $title }}</span>
         @endif

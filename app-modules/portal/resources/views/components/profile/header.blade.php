@@ -142,6 +142,6 @@
         </div>
 
         {{-- Progress Bar --}}
-        <x-portal::profile.progress :stats="$stats" />
+        <x-portal::profile.progress :total_days="$stats['total_days']" />
     </div>
 </div>

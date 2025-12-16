@@ -12,6 +12,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
+use He4rt\Portal\Pages\ParticipantsPage;
 use He4rt\Portal\Pages\PortalPage;
 use He4rt\Portal\Pages\PublicUserProfilePage;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -37,6 +38,9 @@ class GuestPanelProvider extends PanelProvider
                 NavigationItem::make('Portal')
                     ->url('/')
                     ->icon('heroicon-o-home'),
+                NavigationItem::make('Participantes')
+                    ->url('/participants-page')
+                    ->icon('heroicon-o-users'),
             ])
             ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => Blade::render(<<<'BLADE'
                 @guest
@@ -47,6 +51,7 @@ class GuestPanelProvider extends PanelProvider
             ->pages([
                 PortalPage::class,
                 PublicUserProfilePage::class,
+                ParticipantsPage::class,
             ])
             ->viteTheme('app-modules/he4rt/resources/css/theme.css')
             ->discoverWidgets(in: app_path('Filament/Guest/Widgets'), for: 'App\Filament\Guest\Widgets')

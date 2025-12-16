@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/css/filament/guest/theme.css',
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/js/autoAnimate.js',
                 'app-modules/he4rt/resources/css/theme.css',
             ],
             refresh: true,
