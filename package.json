@@ -44,6 +44,6 @@
         ]
     },
     "dependencies": {
-        "@marcreichel/alpine-auto-animate": "^1.1.0"
+        "@formkit/auto-animate": "^0.9.0"
     }
 }
