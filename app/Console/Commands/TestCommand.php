@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use He4rt\IntegrationTwitterApi\Endpoints\FindTweet\FindTweetRequest;
-use He4rt\IntegrationTwitterApi\TwitterApiClient;
 use Illuminate\Console\Command;
 
 class TestCommand extends Command
@@ -27,11 +25,8 @@ class TestCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(TwitterApiClient $client): int
+    public function handle(): int
     {
-
-        $client->findTweets(FindTweetRequest::fromId(1997753906378752170));
-
         return 0;
     }
 }

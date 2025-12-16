@@ -36,7 +36,11 @@ class RefreshUserSubmissions
             $socialiteUser->username,
             $searchUntilDate
         );
-        $response = $this->fetchTweets($searchUntilDate, $socialiteUser->username, $payload);
+        $response = $this->fetchTweetsFromAdvanceSearch($searchUntilDate, $socialiteUser->username, $payload);
+
+        if ($response->tweets === []) {
+            $response = $this->fetchTweetsFromUser($searchUntilDate, $socialiteUser->provider_id);
+        }
 
         foreach ($response->tweets as $tweet) {
 
@@ -71,7 +75,7 @@ class RefreshUserSubmissions
     /**
      * @throws Exception
      */
-    private function fetchTweets(string $searchUntilDate, string $username, string $payload): AdvancedSearchResponse
+    private function fetchTweetsFromAdvanceSearch(string $searchUntilDate, string $username, string $payload): AdvancedSearchResponse
     {
         $client = resolve(TwitterApiClient::class);
 
@@ -80,6 +84,17 @@ class RefreshUserSubmissions
             sprintf('refresh_%s_%s', $username, $searchUntilDate),
             hours(10),
             fn () => $client->advancedSearch(AdvancedSearchRequest::make($payload))
+        );
+    }
+
+    private function fetchTweetsFromUser(string $searchUntilDate, string|int $providerId)
+    {
+        $client = resolve(TwitterApiClient::class);
+
+        return cache()->remember(
+            sprintf('refresh_%s_%s', $providerId, $searchUntilDate),
+            hours(10),
+            fn () => $client->findTweetsFrom($providerId)
         );
     }
 }

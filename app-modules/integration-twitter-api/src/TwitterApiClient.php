@@ -36,6 +36,23 @@ final readonly class TwitterApiClient
         return AdvancedSearchResponse::fromArray($response->json());
     }
 
+    public function findTweetsFrom(string|int $userId): FindTweetResponse
+    {
+        $response = $this
+            ->client
+            ->withQueryParameters([
+                'userId' => $userId,
+                'includeReplies' => true,
+            ])
+            ->get('/twitter/user/last_tweets');
+
+        if ($response->failed()) {
+            throw new Exception($response->body());
+        }
+
+        return FindTweetResponse::fromArray($response->json()['data']);
+    }
+
     public function findTweets(FindTweetRequest $request): FindTweetResponse
     {
         $response = $this
