@@ -15,12 +15,7 @@ class ParticipantsPage extends Page
 {
     protected string $view = 'portal::filament.guest.pages.participants-page';
 
-    protected array $counters = [
-        ['icon' => 'heroicon-o-users', 'color' => 'text-primary', 'value' => 222, 'label' => 'Participants'],
-        ['icon' => 'heroicon-o-trophy', 'color' => 'text-green-500', 'value' => '3k', 'label' => 'Completed'],
-        ['icon' => 'heroicon-o-calendar', 'color' => 'text-warning-500', 'value' => 132, 'label' => 'Total Days'],
-        ['icon' => 'heroicon-s-fire', 'color' => 'text-orange-500', 'value' => 132, 'label' => 'Avg Streak'],
-    ];
+    protected static bool $shouldRegisterNavigation = false;
 
     protected string $heroTitle = 'Meet the Challengers';
 
@@ -32,6 +27,16 @@ class ParticipantsPage extends Page
 
     protected Width|string|null $maxContentWidth = Width::Full;
 
+    protected int $participantsCount = 0;
+
+    protected int $totalDaysCount = 0;
+
+    protected int $winnersCount = 0;
+
+    protected float $streakAvg = 0;
+
+    protected int $generalStreakCount = 0;
+
     public static function abbreviate(int|float $value, int $precision = 1): string
     {
         return $value >= 1000
@@ -39,13 +44,37 @@ class ParticipantsPage extends Page
             : (string) $value;
     }
 
+    public function getHeading(): string
+    {
+        return '';
+    }
+
+    public function getSubheading(): ?string
+    {
+        return null;
+    }
+
     public function mount(): void
     {
-        $this->users = User::query()
-            ->whereHas('submissions')
+        $usersQuery = User::query()
+            ->whereHas('submissions');
+
+        $this->participantsCount = (clone $usersQuery)->count();
+
+        $this->users = $usersQuery
             ->get()
-            ->map(function ($user): array {
+            ->map(function (User $user): array {
                 $metrics = self::calculateTwitterMetrics($user->submissions);
+
+                $this->totalDaysCount += $user->total_days;
+
+                if ($user->total_days >= 100) {
+                    $this->winnersCount += 1;
+                }
+
+                if ($user->current_streak) {
+                    $this->generalStreakCount += $user->current_streak;
+                }
 
                 return [
                     'name' => $user->name,
@@ -63,19 +92,11 @@ class ParticipantsPage extends Page
                 ];
             })
             ->all();
+
+        $this->streakAvg = $this->participantsCount / $this->generalStreakCount;
     }
 
-    public function getHeading(): string
-    {
-        return '';
-    }
-
-    public function getSubheading(): ?string
-    {
-        return null;
-    }
-
-    protected function calculateTwitterMetrics($submissions): array
+    protected function calculateTwitterMetrics(Collection $submissions): array
     {
         $metrics = [
             'likes' => 0,
@@ -92,11 +113,21 @@ class ParticipantsPage extends Page
         return $metrics;
     }
 
+    protected function getHeroInfo(): array
+    {
+        return [
+            ['icon' => 'heroicon-o-users', 'color' => 'text-primary', 'value' => $this->participantsCount, 'label' => 'Participantes'],
+            ['icon' => 'heroicon-o-trophy', 'color' => 'text-green-500', 'value' => $this->winnersCount, 'label' => 'Vencedores'],
+            ['icon' => 'heroicon-o-calendar', 'color' => 'text-warning-500', 'value' => $this->totalDaysCount, 'label' => 'Dias no Total'],
+            ['icon' => 'heroicon-s-fire', 'color' => 'text-orange-500', 'value' => Number::abbreviate($this->streakAvg, 2), 'label' => 'Média de Streak'],
+        ];
+    }
+
     protected function getViewData(): array
     {
         return [
             'title' => $this->heroTitle,
-            'counters' => $this->counters,
+            'counters' => $this->getHeroInfo(),
             'subtitle' => $this->subtitle,
             'users' => $this->users,
         ];

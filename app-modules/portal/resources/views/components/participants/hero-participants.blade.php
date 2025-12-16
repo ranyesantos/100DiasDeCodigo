@@ -35,7 +35,7 @@
                     class="bg-primary/3 flex h-28 items-center justify-center gap-0 rounded-2xl"
                     :interactive="false"
                 >
-                    <x-slot:icon class="flex items-center justify-center">
+                    <x-slot:icon class="mb-1 flex items-center justify-center">
                         <x-filament::icon icon="{{ $counter['icon'] }}" class="h-6 w-6 {{ $counter['color'] }}" />
                     </x-slot>
 

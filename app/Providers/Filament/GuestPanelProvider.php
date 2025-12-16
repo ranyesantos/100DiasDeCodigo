@@ -40,6 +40,9 @@ class GuestPanelProvider extends PanelProvider
                 NavigationItem::make('Portal')
                     ->url('/')
                     ->icon('heroicon-o-home'),
+                NavigationItem::make('Participantes')
+                    ->url('/participants-page')
+                    ->icon('heroicon-o-users'),
             ])
             ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => Blade::render(<<<'BLADE'
                 @guest

@@ -24,10 +24,10 @@
 
     <x-slot:description>
         <div
-            class="flex flex-row items-center gap-3"
+            class="flex flex-row items-center justify-around gap-3"
             :class="{
-                'flex justify-between': viewMode === 'list',
-                'flex justify-center': viewMode === 'grid',
+                'md:justify-between': viewMode === 'list',
+                'md:justify-center': viewMode === 'grid',
             }"
         >
             <!-- current streak -->
