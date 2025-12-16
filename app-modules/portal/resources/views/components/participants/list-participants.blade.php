@@ -1,12 +1,3 @@
-@props([
-    'interactive' => false,
-    'fields' => [],
-    'technologies' => [],
-    'participants' => [],
-    'defaultSort' => 'Progress',
-    'defaultViewMode' => 'grid',
-])
-
 <section
     x-ref="section"
     class="container mx-auto max-w-7xl px-4 py-8"

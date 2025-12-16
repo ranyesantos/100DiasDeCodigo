@@ -1,13 +1,3 @@
-@props([
-    'name' => '',
-    'username' => '',
-    'avatar' => '',
-    'rank' => '',
-    'progress' => '',
-    'stats' => '',
-    'tags' => [],
-])
-
 <x-he4rt::card
     href="#"
     x-bind:href="'/u/' + participant.username"

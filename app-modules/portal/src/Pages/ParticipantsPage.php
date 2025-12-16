@@ -24,7 +24,7 @@ class ParticipantsPage extends Page
 
     protected string $subtitle = 'Descubra desenvolvedores que estão superando seus próprios limites com o #100DiasDeCodigo e encontre pessoas para evoluir e programar junto com você';
 
-    protected array $users;
+    protected array $participants;
 
     protected Collection $technologies;
 
@@ -63,12 +63,12 @@ class ParticipantsPage extends Page
             Js::make('autoAnimate', Vite::asset('resources/js/autoAnimate.js'))->module(),
         ]);
 
-        $usersQuery = User::query()
+        $participantsQuery = User::query()
             ->whereHas('submissions');
 
-        $this->participantsCount = (clone $usersQuery)->count();
+        $this->participantsCount = (clone $participantsQuery)->count();
 
-        $this->users = $usersQuery
+        $this->participants = $participantsQuery
             ->get()
             ->map(function (User $user): array {
                 $metrics = self::calculateTwitterMetrics($user->submissions);
@@ -136,7 +136,7 @@ class ParticipantsPage extends Page
             'title' => $this->heroTitle,
             'counters' => $this->getHeroInfo(),
             'subtitle' => $this->subtitle,
-            'users' => $this->users,
+            'participants' => $this->participants,
         ];
     }
 }
