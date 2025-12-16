@@ -28,6 +28,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use He4rt\Submission\Enums\SubmissionStatus;
+use He4rt\Submission\Filament\Admin\Resources\Submission\Actions\ReviewSubmissionAction;
 use He4rt\Submission\Filament\Admin\Resources\Submission\Pages\CreateSubmission;
 use He4rt\Submission\Filament\Admin\Resources\Submission\Pages\EditSubmission;
 use He4rt\Submission\Filament\Admin\Resources\Submission\Pages\ListSubmissions;
@@ -49,7 +50,6 @@ class SubmissionResource extends Resource
         return $schema
             ->columns(2)
             ->components([
-
                 Fieldset::make('Submission Details')
                     ->columnSpan(1)
                     ->schema([
@@ -59,13 +59,15 @@ class SubmissionResource extends Resource
                                 Select::make('user_id')
                                     ->relationship('user', 'name')
                                     ->searchable()
+                                    ->disabled()
                                     ->required(),
                                 TextInput::make('tweet_id')
                                     ->readOnly()
+                                    ->disabled()
                                     ->suffixAction(
                                         Action::make('Check Tweet')
-                                            ->icon(Heroicon::Link)
-                                            ->url(fn ($state) => 'https://twitter.com/he4rt/status/'.$state, true)
+                                            ->icon(Heroicon::ArrowUpRight)
+                                            ->url(fn (string $state) => sprintf('https://x.com/i/status/%s', $state), true)
                                     )
                                     ->required(),
                             ]),
@@ -73,9 +75,11 @@ class SubmissionResource extends Resource
                         Select::make('approver_id')
                             ->relationship('approver', 'name')
                             ->searchable()
+                            ->disabled()
                             ->required(),
 
                         Select::make('status')
+                            ->disabled()
                             ->options(SubmissionStatus::class)
                             ->required(),
 
@@ -109,13 +113,21 @@ class SubmissionResource extends Resource
                     ->default(fn (?Submission $record): string => $record->getTweet()->author->userName)
                     ->sortable(),
 
+                TextColumn::make('user.username')
+                    ->copyable()
+                    ->badge()
+                    ->toggleable()
+                    ->searchable(),
+
                 TextColumn::make('status')
                     ->badge(),
+
                 TextColumn::make('progress'),
 
                 TextColumn::make('submitted_at')
                     ->label('Submitted Date')
                     ->date(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -125,6 +137,7 @@ class SubmissionResource extends Resource
                 TrashedFilter::make(),
             ])
             ->recordActions([
+                ReviewSubmissionAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
                 RestoreAction::make(),
