@@ -24,9 +24,8 @@ class ParticipantsPage extends Page
 
     protected string $subtitle = 'Descubra desenvolvedores que estão superando seus próprios limites com o #100DiasDeCodigo e encontre pessoas para evoluir e programar junto com você';
 
-    protected array $participants;
-
-    protected Collection $technologies;
+    /** @var array<int, array<string, mixed>> */
+    protected array $participants = [];
 
     protected Width|string|null $maxContentWidth = Width::Full;
 
@@ -103,6 +102,10 @@ class ParticipantsPage extends Page
         $this->streakAvg = $this->participantsCount / $this->generalStreakCount;
     }
 
+    /**
+     * @param  Collection<int, Submission>  $submissions
+     * @return array{likes:int, views:int}
+     */
     protected function calculateTwitterMetrics(Collection $submissions): array
     {
         $metrics = [
@@ -120,6 +123,14 @@ class ParticipantsPage extends Page
         return $metrics;
     }
 
+    /**
+     * @return array<int, array{
+     *     icon: string,
+     *     color: string,
+     *     value: int|string,
+     *     label: string
+     * }>
+     */
     protected function getHeroInfo(): array
     {
         return [
