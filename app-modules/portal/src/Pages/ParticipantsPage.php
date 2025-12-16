@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Pages;
+namespace He4rt\Portal\Pages;
 
 use App\Models\User;
 use Filament\Pages\Page;
+use Filament\Support\Assets\Js;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentAsset;
 use He4rt\Submission\Models\Submission;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Number;
 
 class ParticipantsPage extends Page
@@ -56,6 +59,10 @@ class ParticipantsPage extends Page
 
     public function mount(): void
     {
+        FilamentAsset::register([
+            Js::make('autoAnimate', Vite::asset('resources/js/autoAnimate.js'))->module(),
+        ]);
+
         $usersQuery = User::query()
             ->whereHas('submissions');
 

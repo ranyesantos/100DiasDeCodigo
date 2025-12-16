@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\ParticipantsPage;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Assets\Js;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
+use He4rt\Portal\Pages\ParticipantsPage;
 use He4rt\Portal\Pages\PortalPage;
 use He4rt\Portal\Pages\PublicUserProfilePage;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -22,7 +21,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class GuestPanelProvider extends PanelProvider
@@ -54,9 +52,6 @@ class GuestPanelProvider extends PanelProvider
                 PortalPage::class,
                 PublicUserProfilePage::class,
                 ParticipantsPage::class,
-            ])
-            ->assets([
-                Js::make('autoAnimate', Vite::asset('resources/js/autoAnimate.js'))->module(),
             ])
             ->viteTheme('app-modules/he4rt/resources/css/theme.css')
             ->discoverWidgets(in: app_path('Filament/Guest/Widgets'), for: 'App\Filament\Guest\Widgets')

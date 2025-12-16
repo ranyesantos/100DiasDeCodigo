@@ -8,7 +8,6 @@
 ])
 
 <section
-    x-load-js="[@js(\Filament\Support\Facades\FilamentAsset::getScriptSrc('autoAnimate'))]"
     x-ref="section"
     class="container mx-auto max-w-7xl px-4 py-8"
     x-init="
