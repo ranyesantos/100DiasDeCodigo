@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Shared\Actions\GoToAdminAction;
+use App\Filament\Shared\Actions\GoToAppAction;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -32,8 +34,7 @@ class GuestPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Purple,
             ])
-            ->topNavigation(true)
-
+            ->topNavigation()
             ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => Blade::render(<<<'BLADE'
                 @guest
                     <x-he4rt::button href="/app" icon-position="leading" icon="heroicon-o-user">Acessar Plataforma</x-he4rt::button>
@@ -43,6 +44,10 @@ class GuestPanelProvider extends PanelProvider
             ->pages([
                 PortalPage::class,
                 PublicUserProfilePage::class,
+            ])
+            ->userMenuItems([
+                GoToAppAction::make(),
+                GoToAdminAction::make(),
             ])
             ->viteTheme('app-modules/he4rt/resources/css/theme.css')
             ->discoverWidgets(in: app_path('Filament/Guest/Widgets'), for: 'App\Filament\Guest\Widgets')

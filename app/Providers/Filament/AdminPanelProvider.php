@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use Filament\Actions\Action;
+use App\Filament\Shared\Actions\GoToAppAction;
 use Filament\Enums\UserMenuPosition;
-use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -15,7 +14,6 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -44,10 +42,7 @@ final class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->userMenuItems([
-                Action::make('go-to-app')
-                    ->label('Ir para o aplicativo')
-                    ->icon(Heroicon::MapPin)
-                    ->url(fn () => Filament::getPanel('app')->getUrl()),
+                GoToAppAction::make(),
             ])
             ->pages([
                 Dashboard::class,
