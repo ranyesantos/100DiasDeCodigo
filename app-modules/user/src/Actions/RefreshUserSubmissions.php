@@ -9,6 +9,7 @@ use App\Models\User;
 use Exception;
 use He4rt\IntegrationTwitterApi\Endpoints\AdvancedSearch\AdvancedSearchRequest;
 use He4rt\IntegrationTwitterApi\Endpoints\AdvancedSearch\AdvancedSearchResponse;
+use He4rt\IntegrationTwitterApi\Endpoints\FindTweet\FindTweetResponse;
 use He4rt\IntegrationTwitterApi\TwitterApiClient;
 use He4rt\Submission\Enums\SubmissionStatus;
 use He4rt\Submission\Models\Submission;
@@ -87,10 +88,14 @@ class RefreshUserSubmissions
         );
     }
 
-    private function fetchTweetsFromUser(string $searchUntilDate, string|int $providerId)
+    /**
+     * @throws Exception
+     */
+    private function fetchTweetsFromUser(string $searchUntilDate, string|int $providerId): FindTweetResponse
     {
         $client = resolve(TwitterApiClient::class);
 
+        /** @var FindTweetResponse */
         return cache()->remember(
             sprintf('refresh_%s_%s', $providerId, $searchUntilDate),
             hours(10),

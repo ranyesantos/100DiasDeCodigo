@@ -42,10 +42,12 @@ class BulkRefreshSubmissionsAction extends Action
      */
     public function refreshSubmissions(): void
     {
-        $users = SocialiteUser::query()->where('provider', 'twitter')
+        $users = SocialiteUser::query()
+            ->where('provider', 'twitter')
             ->whereNotNull('username')
             ->get();
 
+        /** @var SocialiteUser $socialiteUser */
         foreach ($users as $socialiteUser) {
             dispatch(new RefreshUserSubmissionJob($socialiteUser->user));
         }

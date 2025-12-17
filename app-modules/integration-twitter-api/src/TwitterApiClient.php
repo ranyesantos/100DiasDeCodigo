@@ -36,6 +36,9 @@ final readonly class TwitterApiClient
         return AdvancedSearchResponse::fromArray($response->json());
     }
 
+    /**
+     * @throws Exception
+     */
     public function findTweetsFrom(string|int $userId): FindTweetResponse
     {
         $response = $this
