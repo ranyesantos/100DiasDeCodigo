@@ -31,16 +31,11 @@ class RefreshUserSubmissions
             return;
         }
 
-        $searchUntilDate = now()->addDay()->format('Y-m-d');
-        $payload = sprintf(
-            '(from:%s) (#100DiasDeCodigo) until:%s since:2025-11-01_10:22:00_UTC',
-            $socialiteUser->username,
-            $searchUntilDate
-        );
-        $response = $this->fetchTweetsFromAdvanceSearch($searchUntilDate, $socialiteUser->username, $payload);
+        $payload = $this->buildAdvancedSearchPayload($socialiteUser->username);
+        $response = $this->fetchTweetsFromAdvanceSearch($socialiteUser->username, $payload);
 
         if ($response->tweets === []) {
-            $response = $this->fetchTweetsFromUser($searchUntilDate, $socialiteUser->provider_id);
+            $response = $this->fetchTweetsFromUser($socialiteUser->provider_id);
         }
 
         foreach ($response->tweets as $tweet) {
@@ -51,13 +46,13 @@ class RefreshUserSubmissions
     /**
      * @throws Exception
      */
-    private function fetchTweetsFromAdvanceSearch(string $searchUntilDate, string $username, string $payload): AdvancedSearchResponse
+    private function fetchTweetsFromAdvanceSearch(string $username, string $payload): AdvancedSearchResponse
     {
         $client = resolve(TwitterApiClient::class);
 
         /** @var AdvancedSearchResponse */
         return cache()->remember(
-            sprintf('refresh_%s_%s', $username, $searchUntilDate),
+            sprintf('refresh_%s_%s', $username, now()->addDay()->format('Y-m-d')),
             hours(10),
             fn () => $client->advancedSearch(AdvancedSearchRequest::make($payload))
         );
@@ -66,15 +61,28 @@ class RefreshUserSubmissions
     /**
      * @throws Exception
      */
-    private function fetchTweetsFromUser(string $searchUntilDate, string|int $providerId): FindTweetResponse
+    private function fetchTweetsFromUser(string|int $providerId): FindTweetResponse
     {
         $client = resolve(TwitterApiClient::class);
 
         /** @var FindTweetResponse */
         return cache()->remember(
-            sprintf('refresh_%s_%s', $providerId, $searchUntilDate),
+            sprintf('refresh_%s_%s', $providerId, now()->addDay()->format('Y-m-d')),
             hours(10),
             fn () => $client->findTweetsFrom($providerId)
         );
+    }
+
+    private function buildAdvancedSearchPayload(string $username): string
+    {
+        if (config()->boolean('100daysofcode.advanced_query')) {
+            return sprintf(
+                '(from:%s) (#100DiasDeCodigo) until:%s since:2025-11-01_10:22:00_UTC',
+                $username,
+                now()->addDay()->format('Y-m-d')
+            );
+        }
+
+        return '(from:%s) (#100DiasDeCodigo)';
     }
 }
